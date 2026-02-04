@@ -12,13 +12,39 @@ const SYMPTOM_TABS = [
   'Digestive'
 ];
 
-const SYMPTOMS = [
-  'Back Pain', 
-  'Neck Pain', 
-  'Joint Pain', 
-  'Headache', 
-  'Chest Pain', 
-  'Muscle Pain'
+const SYMPTOMS_COLLAPSED = [
+  'Back Pain',
+  'Neck Pain',
+  'Joint Pain',
+  'Headache',
+  'Chest Pain',
+  'Muscle Pain',
+];
+
+const SYMPTOMS_EXPANDED = [
+  'Back Pain',
+  'Neck Pain',
+  'Joint Pain',
+  'Headache',
+  'Chest Pain',
+  'Muscle Pain',
+  'Cough',
+  'Shortness of Breath',
+  'Congestion',
+  'Sore Throat',
+  'Fever',
+  'Fatigue',
+  'Dizziness',
+  'Nausea',
+  'Anxiety',
+  'Depression',
+  'Insomnia',
+  'Rash',
+  'Itching',
+  'Swelling',
+  'Stomach Pain',
+  'Diarrhea',
+  'Constipation',
 ];
 
 export const SymptomGrid = ({
@@ -29,6 +55,7 @@ export const SymptomGrid = ({
 }) => {
   const [activeTab, setActiveTab] = useState('All Symptoms');
   const [internalSymptoms, setInternalSymptoms] = useState([]);
+  const [showAllSymptoms, setShowAllSymptoms] = useState(false);
 
   const isControlled = controlledSymptoms != null;
   const selectedSymptoms = isControlled ? controlledSymptoms : internalSymptoms;
@@ -83,20 +110,37 @@ export const SymptomGrid = ({
         ))}
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
-        {SYMPTOMS.map(symptom => (
-          <SelectionCard 
-            key={symptom} 
-            label={symptom} 
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+        {(showAllSymptoms ? SYMPTOMS_EXPANDED : SYMPTOMS_COLLAPSED).map(symptom => (
+          <SelectionCard
+            key={symptom}
+            label={symptom}
             selected={selectedSymptoms.includes(symptom)}
             onClick={() => toggleSymptom(symptom)}
           />
         ))}
       </div>
-      
-      <button className="text-blue-600 font-extrabold text-sm hover:underline block mx-auto pt-2">
-        ... more
-      </button>
+
+      {showAllSymptoms ? (
+        <button
+          type="button"
+          onClick={() => setShowAllSymptoms(false)}
+          className="text-blue-600 font-extrabold text-sm hover:underline flex items-center justify-center gap-2 mx-auto pt-2"
+        >
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
+          </svg>
+          Show less
+        </button>
+      ) : (
+        <button
+          type="button"
+          onClick={() => setShowAllSymptoms(true)}
+          className="text-blue-600 font-extrabold text-sm hover:underline block mx-auto pt-2"
+        >
+          ... more
+        </button>
+      )}
 
       {selectedSymptoms.length > 0 && (
         <div className="bg-blue-50 rounded-xl p-4 space-y-2">
