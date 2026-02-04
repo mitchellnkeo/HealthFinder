@@ -21,24 +21,35 @@ const SYMPTOMS = [
   'Muscle Pain'
 ];
 
-export const SymptomGrid = () => {
+export const SymptomGrid = ({
+  selectedSymptoms: controlledSymptoms,
+  onToggleSymptom,
+  onClearAll,
+  onRemoveSymptom,
+}) => {
   const [activeTab, setActiveTab] = useState('All Symptoms');
-  const [selectedSymptoms, setSelectedSymptoms] = useState([]);
+  const [internalSymptoms, setInternalSymptoms] = useState([]);
+
+  const isControlled = controlledSymptoms != null;
+  const selectedSymptoms = isControlled ? controlledSymptoms : internalSymptoms;
 
   const toggleSymptom = (symptom) => {
-    setSelectedSymptoms(prev => 
-      prev.includes(symptom) 
-        ? prev.filter(s => s !== symptom) 
-        : [...prev, symptom]
-    );
+    const next = selectedSymptoms.includes(symptom)
+      ? selectedSymptoms.filter(s => s !== symptom)
+      : [...selectedSymptoms, symptom];
+    if (isControlled && onToggleSymptom) onToggleSymptom(symptom);
+    else setInternalSymptoms(next);
   };
 
   const clearAllSymptoms = () => {
-    setSelectedSymptoms([]);
+    if (isControlled && onClearAll) onClearAll();
+    else setInternalSymptoms([]);
   };
 
   const removeSymptom = (symptom) => {
-    setSelectedSymptoms(prev => prev.filter(s => s !== symptom));
+    const next = selectedSymptoms.filter(s => s !== symptom);
+    if (isControlled && onRemoveSymptom) onRemoveSymptom(symptom);
+    else setInternalSymptoms(next);
   };
 
   return (

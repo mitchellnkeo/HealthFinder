@@ -13,15 +13,25 @@ const INSURANCE_PROVIDERS = [
   { name: 'Kaiser Permanente', initial: 'K', bgColor: 'bg-blue-700', textColor: 'text-white', selectedBg: 'bg-blue-50', selectedBorder: 'border-blue-700', selectedText: 'text-blue-700' },
 ];
 
-export const InsuranceGrid = () => {
-  const [selectedProvider, setSelectedProvider] = useState(null);
+export const InsuranceGrid = ({
+  selectedInsurance: controlledInsurance,
+  onSelectInsurance,
+  onClearSelection,
+}) => {
+  const [internalProvider, setInternalProvider] = useState(null);
+
+  const isControlled = controlledInsurance !== undefined;
+  const selectedProvider = isControlled ? controlledInsurance : internalProvider;
 
   const handleSelect = (provider) => {
-    setSelectedProvider(prev => (prev?.name === provider.name ? null : provider));
+    const next = selectedProvider?.name === provider.name ? null : provider;
+    if (isControlled && onSelectInsurance) onSelectInsurance(next);
+    else setInternalProvider(next);
   };
 
   const clearSelection = () => {
-    setSelectedProvider(null);
+    if (isControlled && onClearSelection) onClearSelection();
+    else setInternalProvider(null);
   };
 
   return (
