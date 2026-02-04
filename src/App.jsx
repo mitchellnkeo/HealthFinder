@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import Header from './components/Header';
 import Button from './components/ui/Button';
+import { AuthModal } from './components/AuthModal';
 import { ProviderProfileModal } from './components/ProviderProfileModal';
 import { SearchForm } from './features/search/SearchForm';
 import { SymptomGrid } from './features/search/SymptomGrid';
@@ -20,6 +21,7 @@ export default function App() {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedProvider, setSelectedProvider] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [showAuthModal, setShowAuthModal] = useState(false);
 
   const filteredProviders = useMemo(() => {
     const byFilters = filterProviders(MOCK_PROVIDERS, selectedInsurance, selectedCategory);
@@ -75,9 +77,12 @@ export default function App() {
 
   useEffect(() => {
     const handleEscape = (e) => {
-      if (e.key === 'Escape') setSelectedProvider(null);
+      if (e.key === 'Escape') {
+        setSelectedProvider(null);
+        setShowAuthModal(false);
+      }
     };
-    if (selectedProvider) {
+    if (selectedProvider || showAuthModal) {
       document.addEventListener('keydown', handleEscape);
       document.body.style.overflow = 'hidden';
     }
@@ -85,11 +90,14 @@ export default function App() {
       document.removeEventListener('keydown', handleEscape);
       document.body.style.overflow = '';
     };
-  }, [selectedProvider]);
+  }, [selectedProvider, showAuthModal]);
 
   return (
     <div className="min-h-screen bg-gray-50 font-sans pb-20">
-      <Header />
+      <Header onLoginClick={() => setShowAuthModal(true)} />
+      {showAuthModal && (
+        <AuthModal onClose={() => setShowAuthModal(false)} />
+      )}
       {selectedProvider && (
         <ProviderProfileModal
           provider={selectedProvider}
