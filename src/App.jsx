@@ -17,11 +17,11 @@ export default function App() {
   const [selectedCategory, setSelectedCategory] = useState('All Categories');
   const [selectedInsurance, setSelectedInsurance] = useState(null);
   const [viewMode, setViewMode] = useState('list');
-  const [hasSearched, setHasSearched] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedProvider, setSelectedProvider] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const [showSearchInput, setShowSearchInput] = useState(false);
 
   const filteredProviders = useMemo(() => {
     const byFilters = filterProviders(MOCK_PROVIDERS, selectedInsurance, selectedCategory);
@@ -36,22 +36,17 @@ export default function App() {
   const resultsCount = filteredProviders.length;
   const totalPages = Math.max(1, Math.ceil(resultsCount / PAGE_SIZE));
   const pageIndex = Math.min(currentPage, totalPages);
-  const displayProviders = hasSearched
-    ? filteredProviders.slice((pageIndex - 1) * PAGE_SIZE, pageIndex * PAGE_SIZE)
-    : [];
+  const displayProviders = filteredProviders.slice((pageIndex - 1) * PAGE_SIZE, pageIndex * PAGE_SIZE);
   const displayCount = displayProviders.length;
   const startItem = resultsCount === 0 ? 0 : (pageIndex - 1) * PAGE_SIZE + 1;
   const endItem = Math.min(pageIndex * PAGE_SIZE, resultsCount);
 
-  const handleAllProviders = () => {
-    setSearchQuery('');
-    setHasSearched(true);
-    setCurrentPage(1);
-  };
-
   const handleSearchProviders = () => {
-    setHasSearched(true);
-    setCurrentPage(1);
+    if (!showSearchInput) {
+      setShowSearchInput(true);
+    } else {
+      setCurrentPage(1);
+    }
   };
 
   useEffect(() => {
@@ -59,10 +54,10 @@ export default function App() {
   }, [selectedCategory, selectedInsurance]);
 
   useEffect(() => {
-    if (hasSearched && currentPage > totalPages && totalPages >= 1) {
+    if (currentPage > totalPages && totalPages >= 1) {
       setCurrentPage(totalPages);
     }
-  }, [hasSearched, currentPage, totalPages]);
+  }, [currentPage, totalPages]);
 
   const goToPrevPage = () => {
     setCurrentPage((p) => Math.max(1, p - 1));
@@ -137,9 +132,9 @@ export default function App() {
             onClearSelection={() => setSelectedInsurance(null)}
           />
 
-          <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center justify-between pt-8">
-            <div className="flex flex-1 max-w-xl gap-3">
-              <div className="relative flex-1">
+          <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center pt-8">
+            {showSearchInput && (
+              <div className="relative flex-1 max-w-xl">
                 <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -155,29 +150,22 @@ export default function App() {
                   aria-label="Search providers by name or clinic"
                 />
               </div>
-              <Button
-                variant="primary"
-                className="shrink-0 px-6 py-3.5 rounded-xl text-base bg-gray-800 hover:bg-gray-900"
-                onClick={handleSearchProviders}
-              >
-                <svg className="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-                Search Providers
-              </Button>
-            </div>
+            )}
             <Button
               variant="primary"
-              className="shrink-0 px-8 py-3.5 rounded-xl text-base bg-gray-800 hover:bg-gray-900 sm:ml-auto"
-              onClick={handleAllProviders}
+              className="shrink-0 px-6 py-3.5 rounded-xl text-base bg-gray-800 hover:bg-gray-900"
+              onClick={handleSearchProviders}
             >
-              All Providers
+              <svg className="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+              Search Providers
             </Button>
           </div>
         </div>
 
-        {/* Results Bar - shown after search */}
-        {hasSearched && (
+        {/* Results Bar - providers always shown by default */}
+        {(
           <>
             <div className="mt-12 flex flex-col sm:flex-row justify-between items-center gap-6">
               <div className="flex items-center gap-4 text-sm font-bold text-gray-500">
