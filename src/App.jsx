@@ -7,33 +7,53 @@ import { SymptomGrid } from './features/search/SymptomGrid';
 import { CategoryGrid } from './features/search/CategoryGrid';
 import { InsuranceGrid } from './features/search/InsuranceGrid';
 import { ProviderResults } from './features/results/ProviderResults';
-import { MOCK_PROVIDERS, filterProvidersByInsurance } from './data/providers';
+import { MOCK_PROVIDERS, filterProviders } from './data/providers';
 
-const DEFAULT_SHOW_COUNT = 5;
+const PAGE_SIZE = 8;
 
 export default function App() {
   const [selectedSymptoms, setSelectedSymptoms] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState('All Categories');
   const [selectedInsurance, setSelectedInsurance] = useState(null);
   const [viewMode, setViewMode] = useState('list');
   const [hasSearched, setHasSearched] = useState(false);
-  const [showCount, setShowCount] = useState(DEFAULT_SHOW_COUNT);
+  const [currentPage, setCurrentPage] = useState(1);
   const [selectedProvider, setSelectedProvider] = useState(null);
 
   const filteredProviders = useMemo(
-    () => filterProvidersByInsurance(MOCK_PROVIDERS, selectedInsurance),
-    [selectedInsurance]
+    () => filterProviders(MOCK_PROVIDERS, selectedInsurance, selectedCategory),
+    [selectedInsurance, selectedCategory]
   );
   const resultsCount = filteredProviders.length;
-  const displayProviders = hasSearched ? filteredProviders.slice(0, showCount) : [];
+  const totalPages = Math.max(1, Math.ceil(resultsCount / PAGE_SIZE));
+  const pageIndex = Math.min(currentPage, totalPages);
+  const displayProviders = hasSearched
+    ? filteredProviders.slice((pageIndex - 1) * PAGE_SIZE, pageIndex * PAGE_SIZE)
+    : [];
   const displayCount = displayProviders.length;
+  const startItem = resultsCount === 0 ? 0 : (pageIndex - 1) * PAGE_SIZE + 1;
+  const endItem = Math.min(pageIndex * PAGE_SIZE, resultsCount);
 
   const handleSearch = () => {
     setHasSearched(true);
-    setShowCount(DEFAULT_SHOW_COUNT);
+    setCurrentPage(1);
   };
 
-  const handleShowMore = () => {
-    setShowCount(Math.min(10, resultsCount));
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [selectedCategory, selectedInsurance]);
+
+  useEffect(() => {
+    if (hasSearched && currentPage > totalPages && totalPages >= 1) {
+      setCurrentPage(totalPages);
+    }
+  }, [hasSearched, currentPage, totalPages]);
+
+  const goToPrevPage = () => {
+    setCurrentPage((p) => Math.max(1, p - 1));
+  };
+  const goToNextPage = () => {
+    setCurrentPage((p) => Math.min(totalPages, p + 1));
   };
 
   const handleViewProfile = (provider) => {
@@ -83,7 +103,10 @@ export default function App() {
 
           <hr className="border-gray-100 my-10" />
 
-          <CategoryGrid />
+          <CategoryGrid
+            selectedCategory={selectedCategory}
+            onSelectCategory={setSelectedCategory}
+          />
 
           <hr className="border-gray-100 my-10" />
 
@@ -113,20 +136,8 @@ export default function App() {
             <div className="mt-12 flex flex-col sm:flex-row justify-between items-center gap-6">
               <div className="flex items-center gap-4 text-sm font-bold text-gray-500">
                 <span>
-                  Showing {displayCount} of {resultsCount} results
+                  Showing {startItem}-{endItem} of {resultsCount} results
                 </span>
-                {resultsCount > showCount && (
-                  <button
-                    type="button"
-                    onClick={handleShowMore}
-                    className="bg-white border border-gray-200 rounded-xl px-4 py-2 flex items-center gap-3 cursor-pointer hover:bg-gray-50 transition-colors"
-                  >
-                    Show {Math.min(10, resultsCount)}
-                    <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </button>
-                )}
               </div>
 
               <div className="flex items-center bg-white p-1.5 rounded-2xl shadow-sm border border-gray-100">
@@ -172,11 +183,45 @@ export default function App() {
                 No providers match your current filters. Try adjusting insurance or search criteria.
               </p>
             ) : (
-              <ProviderResults
-                providers={displayProviders}
-                viewMode={viewMode}
-                onViewProfile={handleViewProfile}
-              />
+              <>
+                <ProviderResults
+                  providers={displayProviders}
+                  viewMode={viewMode}
+                  onViewProfile={handleViewProfile}
+                />
+                {totalPages > 1 && (
+                  <nav
+                    className="mt-10 flex items-center justify-center gap-4"
+                    aria-label="Provider results pagination"
+                  >
+                    <button
+                      type="button"
+                      onClick={goToPrevPage}
+                      disabled={pageIndex <= 1}
+                      className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-600 shadow-sm transition-colors hover:bg-gray-50 disabled:pointer-events-none disabled:opacity-50"
+                      aria-label="Previous page"
+                    >
+                      <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
+                      </svg>
+                    </button>
+                    <span className="text-sm font-bold text-gray-700">
+                      Page {pageIndex} of {totalPages}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={goToNextPage}
+                      disabled={pageIndex >= totalPages}
+                      className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-600 shadow-sm transition-colors hover:bg-gray-50 disabled:pointer-events-none disabled:opacity-50"
+                      aria-label="Next page"
+                    >
+                      <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                      </svg>
+                    </button>
+                  </nav>
+                )}
+              </>
             )}
           </>
         )}
