@@ -41,12 +41,12 @@ export default function App() {
   const startItem = resultsCount === 0 ? 0 : (pageIndex - 1) * PAGE_SIZE + 1;
   const endItem = Math.min(pageIndex * PAGE_SIZE, resultsCount);
 
-  const handleSearchProviders = () => {
-    if (!showSearchInput) {
-      setShowSearchInput(true);
-    } else {
-      setCurrentPage(1);
-    }
+  const handleToggleSearchInput = () => {
+    setShowSearchInput((prev) => !prev);
+  };
+
+  const handleSearchSubmit = () => {
+    setCurrentPage(1);
   };
 
   useEffect(() => {
@@ -144,7 +144,7 @@ export default function App() {
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  onKeyDown={(e) => e.key === 'Enter' && handleSearchProviders()}
+                  onKeyDown={(e) => e.key === 'Enter' && handleSearchSubmit()}
                   placeholder="Doctor name or clinic..."
                   className="w-full rounded-xl border border-gray-200 bg-gray-50 py-3.5 pl-12 pr-4 text-gray-700 placeholder-gray-400 focus:border-gray-400 focus:bg-white focus:outline-none font-medium transition-colors"
                   aria-label="Search providers by name or clinic"
@@ -154,7 +154,7 @@ export default function App() {
             <Button
               variant="primary"
               className="shrink-0 px-6 py-3.5 rounded-xl text-base bg-gray-800 hover:bg-gray-900"
-              onClick={handleSearchProviders}
+              onClick={handleToggleSearchInput}
             >
               <svg className="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
