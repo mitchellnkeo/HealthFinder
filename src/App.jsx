@@ -1,6 +1,7 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import Header from './components/Header';
 import Button from './components/ui/Button';
+import { ProviderProfileModal } from './components/ProviderProfileModal';
 import { SearchForm } from './features/search/SearchForm';
 import { SymptomGrid } from './features/search/SymptomGrid';
 import { CategoryGrid } from './features/search/CategoryGrid';
@@ -16,6 +17,7 @@ export default function App() {
   const [viewMode, setViewMode] = useState('list');
   const [hasSearched, setHasSearched] = useState(false);
   const [showCount, setShowCount] = useState(DEFAULT_SHOW_COUNT);
+  const [selectedProvider, setSelectedProvider] = useState(null);
 
   const filteredProviders = useMemo(
     () => filterProvidersByInsurance(MOCK_PROVIDERS, selectedInsurance),
@@ -35,13 +37,32 @@ export default function App() {
   };
 
   const handleViewProfile = (provider) => {
-    // Placeholder for navigation or modal
-    if (provider?.name) console.log('View profile:', provider.name);
+    setSelectedProvider(provider ?? null);
   };
+
+  useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === 'Escape') setSelectedProvider(null);
+    };
+    if (selectedProvider) {
+      document.addEventListener('keydown', handleEscape);
+      document.body.style.overflow = 'hidden';
+    }
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+      document.body.style.overflow = '';
+    };
+  }, [selectedProvider]);
 
   return (
     <div className="min-h-screen bg-gray-50 font-sans pb-20">
       <Header />
+      {selectedProvider && (
+        <ProviderProfileModal
+          provider={selectedProvider}
+          onClose={() => setSelectedProvider(null)}
+        />
+      )}
 
       <main className="max-w-6xl mx-auto px-6">
         <div className="bg-white rounded-[40px] p-10 shadow-xl shadow-gray-200/50 border border-gray-100">

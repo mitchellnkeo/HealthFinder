@@ -14,11 +14,14 @@ export const MOCK_PROVIDERS = [
     accepts: ['Blue Cross', 'Aetna', 'UnitedHealthcare', 'Cigna'],
     waitTime: '1-2 weeks',
     slots: [
-      { date: 'Thu, Feb 5', count: 7 },
-      { date: 'Fri, Feb 6', count: 3 },
-      { date: 'Sat, Feb 7', count: 7 },
+      { date: 'Thu, Feb 5', count: 3 },
+      { date: 'Fri, Feb 6', count: 8 },
+      { date: 'Sat, Feb 7', count: 2 },
     ],
     imageUrl: null,
+    referralStatus: 'No Referral Needed',
+    doctorsAtLocation: 8,
+    about: 'Board-certified family physician with 15+ years of experience.',
   },
   {
     id: '2',
@@ -36,6 +39,9 @@ export const MOCK_PROVIDERS = [
       { date: 'Sat, Feb 7', count: 5 },
     ],
     imageUrl: null,
+    referralStatus: 'No Referral Needed',
+    doctorsAtLocation: 4,
+    about: 'Board-certified family physician with 10+ years of experience.',
   },
   {
     id: '3',
@@ -53,6 +59,9 @@ export const MOCK_PROVIDERS = [
       { date: 'Sat, Feb 7', count: 2 },
     ],
     imageUrl: null,
+    referralStatus: 'No Referral Needed',
+    doctorsAtLocation: 6,
+    about: 'Board-certified family physician with 12+ years of experience.',
   },
   {
     id: '4',
@@ -70,6 +79,9 @@ export const MOCK_PROVIDERS = [
       { date: 'Sat, Feb 7', count: 9 },
     ],
     imageUrl: null,
+    referralStatus: 'No Referral Needed',
+    doctorsAtLocation: 5,
+    about: 'Board-certified family physician with 8+ years of experience.',
   },
   {
     id: '5',
@@ -87,6 +99,9 @@ export const MOCK_PROVIDERS = [
       { date: 'Sat, Feb 7', count: 6 },
     ],
     imageUrl: null,
+    referralStatus: 'No Referral Needed',
+    doctorsAtLocation: 3,
+    about: 'Board-certified family physician with 7+ years of experience.',
   },
 ];
 
@@ -112,4 +127,16 @@ export const INSURANCE_TAG_STYLES = {
   Medicaid: { initial: 'M', bg: 'bg-emerald-500', text: 'text-white' },
   Humana: { initial: 'H', bg: 'bg-red-500', text: 'text-white' },
   'Kaiser Permanente': { initial: 'K', bg: 'bg-blue-700', text: 'text-white' },
+};
+
+/** Light/pastel styling for insurance cards in provider profile. */
+export const INSURANCE_PROFILE_STYLES = {
+  'Blue Cross': { initial: 'B', bg: 'bg-blue-50', border: 'border-blue-200', text: 'text-blue-700' },
+  Aetna: { initial: 'A', bg: 'bg-purple-50', border: 'border-purple-200', text: 'text-purple-700' },
+  UnitedHealthcare: { initial: 'U', bg: 'bg-orange-50', border: 'border-orange-200', text: 'text-orange-700' },
+  Cigna: { initial: 'C', bg: 'bg-green-50', border: 'border-green-200', text: 'text-green-700' },
+  Medicare: { initial: 'M', bg: 'bg-cyan-50', border: 'border-cyan-200', text: 'text-cyan-700' },
+  Medicaid: { initial: 'M', bg: 'bg-emerald-50', border: 'border-emerald-200', text: 'text-emerald-700' },
+  Humana: { initial: 'H', bg: 'bg-red-50', border: 'border-red-200', text: 'text-red-700' },
+  'Kaiser Permanente': { initial: 'K', bg: 'bg-blue-50', border: 'border-blue-200', text: 'text-blue-700' },
 };
