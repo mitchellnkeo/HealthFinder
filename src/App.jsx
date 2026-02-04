@@ -19,11 +19,18 @@ export default function App() {
   const [hasSearched, setHasSearched] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedProvider, setSelectedProvider] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
 
-  const filteredProviders = useMemo(
-    () => filterProviders(MOCK_PROVIDERS, selectedInsurance, selectedCategory),
-    [selectedInsurance, selectedCategory]
-  );
+  const filteredProviders = useMemo(() => {
+    const byFilters = filterProviders(MOCK_PROVIDERS, selectedInsurance, selectedCategory);
+    const query = searchQuery.trim().toLowerCase();
+    if (!query) return byFilters;
+    return byFilters.filter(
+      (p) =>
+        (p.name && p.name.toLowerCase().includes(query)) ||
+        (p.clinic && p.clinic.toLowerCase().includes(query))
+    );
+  }, [selectedInsurance, selectedCategory, searchQuery]);
   const resultsCount = filteredProviders.length;
   const totalPages = Math.max(1, Math.ceil(resultsCount / PAGE_SIZE));
   const pageIndex = Math.min(currentPage, totalPages);
@@ -34,7 +41,13 @@ export default function App() {
   const startItem = resultsCount === 0 ? 0 : (pageIndex - 1) * PAGE_SIZE + 1;
   const endItem = Math.min(pageIndex * PAGE_SIZE, resultsCount);
 
-  const handleSearch = () => {
+  const handleAllProviders = () => {
+    setSearchQuery('');
+    setHasSearched(true);
+    setCurrentPage(1);
+  };
+
+  const handleSearchProviders = () => {
     setHasSearched(true);
     setCurrentPage(1);
   };
@@ -116,16 +129,41 @@ export default function App() {
             onClearSelection={() => setSelectedInsurance(null)}
           />
 
-          <div className="flex justify-end pt-8">
+          <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center justify-between pt-8">
+            <div className="flex flex-1 max-w-xl gap-3">
+              <div className="relative flex-1">
+                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                </span>
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && handleSearchProviders()}
+                  placeholder="Doctor name or clinic..."
+                  className="w-full rounded-xl border border-gray-200 bg-gray-50 py-3.5 pl-12 pr-4 text-gray-700 placeholder-gray-400 focus:border-gray-400 focus:bg-white focus:outline-none font-medium transition-colors"
+                  aria-label="Search providers by name or clinic"
+                />
+              </div>
+              <Button
+                variant="primary"
+                className="shrink-0 px-6 py-3.5 rounded-xl text-base bg-gray-800 hover:bg-gray-900"
+                onClick={handleSearchProviders}
+              >
+                <svg className="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+                Search Providers
+              </Button>
+            </div>
             <Button
               variant="primary"
-              className="px-10 py-4 rounded-xl text-lg group bg-gray-800 hover:bg-gray-900"
-              onClick={handleSearch}
+              className="shrink-0 px-8 py-3.5 rounded-xl text-base bg-gray-800 hover:bg-gray-900 sm:ml-auto"
+              onClick={handleAllProviders}
             >
-              <svg className="w-6 h-6 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-              Search Providers
+              All Providers
             </Button>
           </div>
         </div>
