@@ -8,6 +8,7 @@ import { SymptomGrid } from './features/search/SymptomGrid';
 import { CategoryGrid } from './features/search/CategoryGrid';
 import { InsuranceGrid } from './features/search/InsuranceGrid';
 import { ProviderResults } from './features/results/ProviderResults';
+import { ProviderMap } from './components/ProviderMap';
 import { MOCK_PROVIDERS, filterProviders } from './data/providers';
 
 const PAGE_SIZE = 8;
@@ -170,7 +171,9 @@ export default function App() {
             <div className="mt-12 flex flex-col sm:flex-row justify-between items-center gap-6">
               <div className="flex items-center gap-4 text-sm font-bold text-gray-500">
                 <span>
-                  Showing {startItem}-{endItem} of {resultsCount} results
+                  {viewMode === 'map'
+                    ? `Showing ${resultsCount} of ${resultsCount} results`
+                    : `Showing ${startItem}-${endItem} of ${resultsCount} results`}
                 </span>
               </div>
 
@@ -201,8 +204,11 @@ export default function App() {
                 </button>
                 <button
                   type="button"
-                  className="flex items-center gap-2 px-6 py-2.5 text-gray-400 rounded-xl text-sm font-black hover:text-gray-900 transition-all"
-                  aria-label="Map view (coming soon)"
+                  onClick={() => setViewMode('map')}
+                  className={`flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-black transition-all ${
+                    viewMode === 'map' ? 'bg-gray-800 text-white' : 'text-gray-400 hover:text-gray-900'
+                  }`}
+                  aria-label="Map view"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 20l-5.447-2.724A2 2 0 013 15.447V5.553a2 2 0 011.553-1.944L9 2l5 2.5L19.447 1.83A2 2 0 0122 3.776v9.894a2 2 0 01-1.106 1.789L16 18l-7 2z" />
@@ -216,6 +222,11 @@ export default function App() {
               <p className="mt-12 text-center text-gray-500 font-bold">
                 No providers match your current filters. Try adjusting insurance or search criteria.
               </p>
+            ) : viewMode === 'map' ? (
+              <ProviderMap
+                providers={filteredProviders}
+                onViewProfile={handleViewProfile}
+              />
             ) : (
               <>
                 <ProviderResults
