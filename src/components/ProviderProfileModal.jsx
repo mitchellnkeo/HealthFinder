@@ -108,11 +108,14 @@ function InsuranceProfileCards({ accepts }) {
 }
 
 export function ProviderProfileModal({ provider, onClose }) {
+  const [showContactPopup, setShowContactPopup] = React.useState(false);
+
   if (!provider) return null;
 
   const referralStatus = provider.referralStatus ?? 'No Referral Needed';
   const doctorsAtLocation = provider.doctorsAtLocation ?? 0;
   const about = provider.about ?? 'Board-certified family physician.';
+  const hasSpecialty = Boolean(provider.specialty?.trim());
 
   const handleBackdropClick = (e) => {
     if (e.target === e.currentTarget && onClose) onClose();
@@ -154,16 +157,18 @@ export function ProviderProfileModal({ provider, onClose }) {
               <VerificationBadge />
             </div>
             <p className="text-gray-600 mt-1">{provider.clinic}</p>
-            <span className="inline-block mt-2 px-4 py-1.5 rounded-full bg-gray-900 text-white text-sm font-bold uppercase tracking-wider">
-              {provider.specialty}
-            </span>
+            {hasSpecialty && (
+              <span className="inline-block mt-2 px-4 py-1.5 rounded-full bg-gray-900 text-white text-sm font-bold uppercase tracking-wider">
+                {provider.specialty}
+              </span>
+            )}
             <div className="flex items-center justify-center gap-2 mt-3 text-gray-900">
               {ICONS.star}
               <span className="font-bold">{provider.rating} rating</span>
             </div>
           </div>
 
-          {/* Contact Information */}
+          {/* 1) Contact Information */}
           <SectionCard title="Contact Information">
             <div className="space-y-3">
               <div className="flex items-start gap-3">
@@ -177,42 +182,7 @@ export function ProviderProfileModal({ provider, onClose }) {
             </div>
           </SectionCard>
 
-          {/* Practice Information */}
-          <div>
-            <h3 className="text-lg font-bold text-gray-900 mb-4">Practice Information</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div className={`rounded-xl p-4 flex flex-col items-center text-center gap-2 border ${referralStatus.toLowerCase().includes('no') ? 'bg-gray-100 border-gray-200' : 'bg-gray-200 border-gray-300'}`}>
-                {ICONS.referral}
-                <span className="text-sm text-gray-600">Referral Status</span>
-                <span className="font-bold text-gray-900">{referralStatus}</span>
-              </div>
-              <div className="bg-blue-50/80 border border-blue-100 rounded-xl p-4 flex flex-col items-center text-center gap-2">
-                {ICONS.people}
-                <span className="text-sm text-gray-600">Primary Care Doctors</span>
-                <span className="font-bold text-blue-700 text-2xl leading-none">{doctorsAtLocation}</span>
-                <span className="text-sm text-gray-600">at this location</span>
-              </div>
-              <div className="bg-purple-50/80 border border-purple-100 rounded-xl p-4 flex flex-col items-center text-center gap-2">
-                {ICONS.starPurple}
-                <span className="text-sm text-gray-600">Patient Rating</span>
-                <span className="font-bold text-purple-700 text-2xl leading-none">{provider.rating}</span>
-                <span className="text-sm text-gray-600">out of 5.0</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Specialty */}
-          <div>
-            <h3 className="text-lg font-bold text-gray-900 mb-4">Specialty</h3>
-            <div className="space-y-2">
-              <p className="text-sm text-gray-600">Area of Practice</p>
-              <p className="font-bold text-gray-900">{provider.specialty}</p>
-              <p className="text-sm text-gray-600 mt-3">About</p>
-              <p className="text-gray-700">{about}</p>
-            </div>
-          </div>
-
-          {/* Wait Time & Availability */}
+          {/* 2) Wait Time */}
           <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
             <div className="flex items-center gap-2 mb-2">
               {ICONS.clock}
@@ -230,15 +200,26 @@ export function ProviderProfileModal({ provider, onClose }) {
             </div>
           </div>
 
-          {/* Contact Provider */}
-          <button
-            type="button"
-            className="w-full py-4 rounded-xl bg-gray-900 text-white font-bold hover:bg-gray-800 transition-colors"
-          >
-            Contact Provider
-          </button>
+          {/* 3) Primary Care blurb (About); specialty only if not empty; Claim this profile */}
+          <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
+            <h3 className="text-lg font-bold text-gray-900 mb-3">About</h3>
+            {hasSpecialty && (
+              <>
+                <p className="text-sm text-gray-600 mb-1">Specialty</p>
+                <p className="font-bold text-gray-900 mb-3">{provider.specialty}</p>
+              </>
+            )}
+            <p className="text-gray-700">{about}</p>
+            <a
+              href="#claim-profile"
+              className="mt-3 inline-block text-sm text-gray-500 hover:text-gray-700 underline focus:outline-none focus:ring-2 focus:ring-gray-400 rounded"
+              onClick={(e) => e.preventDefault()}
+            >
+              Claim this profile
+            </a>
+          </div>
 
-          {/* Insurance Coverage */}
+          {/* 4) Insurance */}
           <div>
             <div className="flex items-center gap-2 mb-2">
               {ICONS.shield}
@@ -250,6 +231,83 @@ export function ProviderProfileModal({ provider, onClose }) {
             </div>
             <p className="text-sm text-gray-600 mb-4">Contact your insurance provider to verify coverage details.</p>
             <InsuranceProfileCards accepts={provider.accepts} />
+          </div>
+
+          {/* 5) Contact Provider button */}
+          <button
+            type="button"
+            onClick={() => setShowContactPopup(true)}
+            className="w-full py-4 rounded-xl bg-gray-900 text-white font-bold hover:bg-gray-800 transition-colors"
+          >
+            Contact Provider
+          </button>
+
+          {/* Contact Provider popup */}
+          {showContactPopup && (
+            <div
+              className="fixed inset-0 z-[10000] flex items-center justify-center p-4"
+              style={{ backgroundColor: 'rgba(15,19,25,0.7)' }}
+              onClick={() => setShowContactPopup(false)}
+              role="dialog"
+              aria-modal="true"
+              aria-label="Contact information"
+            >
+              <div
+                className="bg-white rounded-2xl p-6 shadow-xl max-w-sm w-full border border-gray-100"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <h4 className="text-lg font-bold text-gray-900">Contact</h4>
+                  <button
+                    type="button"
+                    onClick={() => setShowContactPopup(false)}
+                    className="p-1.5 rounded-lg text-gray-500 hover:text-gray-900 hover:bg-gray-100"
+                    aria-label="Close"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3">
+                    {ICONS.phone}
+                    <a href={`tel:${provider.phone}`} className="text-blue-600 font-bold hover:underline">
+                      {provider.phone}
+                    </a>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    {ICONS.location}
+                    <span className="text-gray-700">{provider.address}</span>
+                  </div>
+                  <p className="text-sm text-gray-600 pt-1">{provider.name} · {provider.clinic}</p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* 6) Patient Reviews (Google Map & Yelp) */}
+          <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
+            <h3 className="text-lg font-bold text-gray-900 mb-4">Patient Reviews</h3>
+            <p className="text-sm text-gray-600 mb-3">Reviews from Google Maps and Yelp.</p>
+            <div className="flex flex-wrap gap-2">
+              <span className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-gray-100 text-gray-700 text-sm font-medium">
+                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                  <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                  <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                  <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                </svg>
+                Google Maps
+              </span>
+              <span className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-gray-100 text-gray-700 text-sm font-medium">
+                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="#D32323">
+                  <path d="M20.16 12.594l-4.995 1.392.909-4.312-3.422-3.335 4.439-.647 1.929-4.085 1.93 4.085 4.438.646-3.422 3.336.91 4.311-4.995-1.391zM12 20.4l-1.45 1.02c-1.02.72-2.45 1.16-3.95 1.16-2.21 0-4.2-.91-5.6-2.4C-.4 16.2-.4 12.6.4 10.2 1.2 7.8 2.4 5.8 4 4.2 5.6 2.7 7.6 1.9 9.8 1.2c2.4-.8 4.8-.8 7.2 0 2.2.7 4.2 1.5 5.8 2.9 1.6 1.6 2.8 3.6 3.6 5.8.8 2.4.8 4.8 0 7.2-.7 2.2-1.5 4.2-2.9 5.8-1.6 1.6-3.6 2.8-5.8 3.6-2.4.8-4.8.8-7.2 0z"/>
+                </svg>
+                Yelp
+              </span>
+            </div>
+            <p className="text-sm text-gray-500 mt-3">Review links and excerpts can be added here when available.</p>
           </div>
         </div>
       </div>
