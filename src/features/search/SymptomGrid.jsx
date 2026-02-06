@@ -14,38 +14,38 @@ const SYMPTOM_TABS = [
 
 const SYMPTOMS_COLLAPSED = [
   'Back Pain',
-  'Neck Pain',
-  'Joint Pain',
-  'Headache',
   'Chest Pain',
+  'Headache',
+  'Joint Pain',
   'Muscle Pain',
-];
+  'Neck Pain',
+].sort();
 
 const SYMPTOMS_EXPANDED = [
-  'Back Pain',
-  'Neck Pain',
-  'Joint Pain',
-  'Headache',
-  'Chest Pain',
-  'Muscle Pain',
-  'Cough',
-  'Shortness of Breath',
-  'Congestion',
-  'Sore Throat',
-  'Fever',
-  'Fatigue',
-  'Dizziness',
-  'Nausea',
   'Anxiety',
-  'Depression',
-  'Insomnia',
-  'Rash',
-  'Itching',
-  'Swelling',
-  'Stomach Pain',
-  'Diarrhea',
+  'Back Pain',
+  'Chest Pain',
+  'Congestion',
   'Constipation',
-];
+  'Cough',
+  'Depression',
+  'Diarrhea',
+  'Dizziness',
+  'Fatigue',
+  'Fever',
+  'Headache',
+  'Insomnia',
+  'Itching',
+  'Joint Pain',
+  'Muscle Pain',
+  'Nausea',
+  'Neck Pain',
+  'Rash',
+  'Shortness of Breath',
+  'Sore Throat',
+  'Stomach Pain',
+  'Swelling',
+].sort();
 
 export const SymptomGrid = ({
   selectedSymptoms: controlledSymptoms,
@@ -83,7 +83,9 @@ export const SymptomGrid = ({
     <section className="space-y-8">
       <div className="flex justify-between items-start">
         <div className="space-y-1">
-          <h2 className="text-xl font-extrabold text-gray-900">What symptoms are you experiencing?</h2>
+          <h2 className="text-xl font-extrabold text-gray-900">
+            What symptoms are you experiencing? <span className="text-red-500" aria-hidden="true">*</span>
+          </h2>
           <p className="text-sm font-bold text-gray-400">Select all that apply</p>
         </div>
         {selectedSymptoms.length > 0 && (
@@ -110,7 +112,7 @@ export const SymptomGrid = ({
         ))}
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
         {(showAllSymptoms ? SYMPTOMS_EXPANDED : SYMPTOMS_COLLAPSED).map(symptom => (
           <SelectionCard
             key={symptom}

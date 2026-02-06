@@ -154,8 +154,9 @@ export default function App() {
             )}
             <Button
               variant="primary"
-              className="shrink-0 px-6 py-3.5 rounded-xl text-base bg-gray-800 hover:bg-gray-900"
+              className="shrink-0 px-6 py-3.5 rounded-xl text-base disabled:opacity-60 disabled:cursor-not-allowed disabled:bg-gray-400 disabled:hover:bg-gray-400"
               onClick={handleToggleSearchInput}
+              disabled={selectedSymptoms.length === 0}
             >
               <svg className="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
