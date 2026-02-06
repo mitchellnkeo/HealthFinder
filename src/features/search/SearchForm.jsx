@@ -12,10 +12,10 @@ export const SearchForm = () => {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
           </span>
-          <input 
-            type="text" 
-            placeholder="Doctor name or clinic..." 
-            className="w-full bg-gray-100/80 border-2 border-transparent rounded-xl py-4 pl-12 pr-4 text-gray-700 focus:bg-white focus:border-gray-200 transition-all outline-none font-medium"
+          <input
+            type="text"
+            placeholder="Doctor name or clinic..."
+            className="w-full min-h-[48px] py-2.5 pl-12 pr-4 bg-gray-100/80 border-2 border-transparent rounded-xl text-gray-700 focus:bg-white focus:border-gray-200 transition-all outline-none font-medium"
           />
         </div>
       </div>
@@ -24,10 +24,10 @@ export const SearchForm = () => {
       <div className="space-y-3">
         <label className="text-sm font-extrabold text-gray-900 ml-1">Location</label>
         <div className="relative">
-          <input 
-            type="text" 
-            placeholder="City, ZIP code, or address" 
-            className="w-full bg-gray-100/80 border-2 border-transparent rounded-xl py-4 px-6 text-gray-700 focus:bg-white focus:border-gray-200 transition-all outline-none font-medium"
+          <input
+            type="text"
+            placeholder="City, ZIP code, or address"
+            className="w-full min-h-[48px] py-2.5 px-6 bg-gray-100/80 border-2 border-transparent rounded-xl text-gray-700 focus:bg-white focus:border-gray-200 transition-all outline-none font-medium"
           />
         </div>
       </div>
