@@ -34,7 +34,7 @@ const ICONS = {
     </svg>
   ),
   referral: (
-    <svg className="w-6 h-6 shrink-0 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+    <svg className="w-6 h-6 shrink-0 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
     </svg>
   ),
@@ -120,7 +120,8 @@ export function ProviderProfileModal({ provider, onClose }) {
 
   return (
     <div
-      className="fixed inset-0 z-[9999] flex items-start justify-center overflow-y-auto bg-black/50 p-4 sm:p-6"
+      className="fixed inset-0 z-[9999] flex items-start justify-center overflow-y-auto p-4 sm:p-6"
+      style={{ backgroundColor: '#0F1319' }}
       role="dialog"
       aria-modal="true"
       aria-labelledby="provider-profile-title"
@@ -180,7 +181,7 @@ export function ProviderProfileModal({ provider, onClose }) {
           <div>
             <h3 className="text-lg font-bold text-gray-900 mb-4">Practice Information</h3>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div className="bg-green-50/80 border border-green-100 rounded-xl p-4 flex flex-col items-center text-center gap-2">
+              <div className={`rounded-xl p-4 flex flex-col items-center text-center gap-2 border ${referralStatus.toLowerCase().includes('no') ? 'bg-gray-100 border-gray-200' : 'bg-gray-200 border-gray-300'}`}>
                 {ICONS.referral}
                 <span className="text-sm text-gray-600">Referral Status</span>
                 <span className="font-bold text-gray-900">{referralStatus}</span>
@@ -188,13 +189,13 @@ export function ProviderProfileModal({ provider, onClose }) {
               <div className="bg-blue-50/80 border border-blue-100 rounded-xl p-4 flex flex-col items-center text-center gap-2">
                 {ICONS.people}
                 <span className="text-sm text-gray-600">Primary Care Doctors</span>
-                <span className="font-bold text-blue-700">{doctorsAtLocation}</span>
+                <span className="font-bold text-blue-700 text-2xl leading-none">{doctorsAtLocation}</span>
                 <span className="text-sm text-gray-600">at this location</span>
               </div>
               <div className="bg-purple-50/80 border border-purple-100 rounded-xl p-4 flex flex-col items-center text-center gap-2">
                 {ICONS.starPurple}
                 <span className="text-sm text-gray-600">Patient Rating</span>
-                <span className="font-bold text-purple-700">{provider.rating}</span>
+                <span className="font-bold text-purple-700 text-2xl leading-none">{provider.rating}</span>
                 <span className="text-sm text-gray-600">out of 5.0</span>
               </div>
             </div>
