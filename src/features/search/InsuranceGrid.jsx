@@ -37,7 +37,7 @@ export const InsuranceGrid = ({
   return (
     <section className="space-y-6">
       <h2 className="text-xl font-extrabold text-gray-900">Insurance</h2>
-      <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-8 gap-4">
+      <div className="grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-6 gap-4">
         {INSURANCE_PROVIDERS.map(provider => (
           <InsuranceCard
             key={provider.name}
