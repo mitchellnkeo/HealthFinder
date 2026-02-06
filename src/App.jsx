@@ -22,7 +22,6 @@ export default function App() {
   const [selectedProvider, setSelectedProvider] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [showAuthModal, setShowAuthModal] = useState(false);
-  const [showSearchInput, setShowSearchInput] = useState(false);
 
   const filteredProviders = useMemo(() => {
     const byFilters = filterProviders(MOCK_PROVIDERS, selectedInsurance, selectedCategory);
@@ -41,10 +40,6 @@ export default function App() {
   const displayCount = displayProviders.length;
   const startItem = resultsCount === 0 ? 0 : (pageIndex - 1) * PAGE_SIZE + 1;
   const endItem = Math.min(pageIndex * PAGE_SIZE, resultsCount);
-
-  const handleToggleSearchInput = () => {
-    setShowSearchInput((prev) => !prev);
-  };
 
   const handleSearchSubmit = () => {
     setCurrentPage(1);
@@ -133,29 +128,11 @@ export default function App() {
             onClearSelection={() => setSelectedInsurance(null)}
           />
 
-          <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center pt-8">
-            {showSearchInput && (
-              <div className="relative flex-1 max-w-xl">
-                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                  </svg>
-                </span>
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  onKeyDown={(e) => e.key === 'Enter' && handleSearchSubmit()}
-                  placeholder="Your search is ready"
-                  className="w-full rounded-xl border border-gray-200 bg-gray-50 py-3.5 pl-12 pr-4 text-gray-700 placeholder-gray-400 focus:border-gray-400 focus:bg-white focus:outline-none font-medium transition-colors"
-                  aria-label="Search providers by name or clinic"
-                />
-              </div>
-            )}
+          <div className="flex justify-end pt-8">
             <Button
               variant="primary"
               className="shrink-0 px-6 py-3.5 rounded-xl text-base disabled:opacity-60 disabled:cursor-not-allowed disabled:bg-gray-400 disabled:hover:bg-gray-400"
-              onClick={handleToggleSearchInput}
+              onClick={handleSearchSubmit}
               disabled={selectedSymptoms.length === 0}
             >
               <svg className="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
