@@ -127,7 +127,7 @@ export const SymptomGrid = ({
         <button
           type="button"
           onClick={() => setShowAllSymptoms(false)}
-          className="text-blue-600 font-extrabold text-sm hover:underline flex items-center justify-center gap-2 mx-auto pt-2"
+          className="text-blue-600 font-extrabold text-sm hover:underline flex items-center justify-center gap-2 mx-auto pt-2 cursor-pointer hover:text-blue-700 transition-colors"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
@@ -138,7 +138,7 @@ export const SymptomGrid = ({
         <button
           type="button"
           onClick={() => setShowAllSymptoms(true)}
-          className="text-blue-600 font-extrabold text-sm hover:underline block mx-auto pt-2"
+          className="text-blue-600 font-extrabold text-sm hover:underline block mx-auto pt-2 cursor-pointer hover:text-blue-700 transition-colors"
         >
           ... more
         </button>

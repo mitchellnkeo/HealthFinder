@@ -19,7 +19,15 @@ const InsuranceCard = ({ name, initial, bgColor, textColor, selected, selectedBg
       <span className={`text-[10px] leading-tight font-bold text-center uppercase tracking-wider ${
         isSelected ? selectedText : 'text-gray-500 group-hover:text-gray-900'
       }`}>
-        {name}
+        {name === 'UnitedHealthcare' ? (
+          <>
+            United
+            <br />
+            Healthcare
+          </>
+        ) : (
+          name
+        )}
       </span>
     </button>
   );
