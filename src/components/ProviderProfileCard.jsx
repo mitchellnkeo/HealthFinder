@@ -72,7 +72,7 @@ export function ProviderProfileCardList({ provider, onViewProfile }) {
         {/* Left: provider info */}
         <div className="flex-1 min-w-0 flex gap-4">
           <ProviderAvatar name={provider.name} />
-          <div className="flex-1 min-w-0 space-y-3">
+          <div className="flex-1 min-w-0 space-y-2">
             <div className="flex items-center gap-2 flex-wrap">
               <h3 className="text-lg font-bold text-gray-900">{provider.name}</h3>
               <VerificationBadge />
@@ -149,13 +149,13 @@ export function ProviderProfileCardGrid({ provider, onViewProfile }) {
     <article className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col">
       <div className="flex gap-3 mb-3">
         <ProviderAvatar name={provider.name} />
-        <div className="min-w-0 flex-1">
+        <div className="min-w-0 flex-1 space-y-2">
           <div className="flex items-center gap-2">
             <h3 className="text-base font-bold text-gray-900 truncate">{provider.name}</h3>
             <VerificationBadge />
           </div>
           <p className="text-sm text-gray-600 truncate">{provider.clinic}</p>
-          <span className="inline-block mt-1 px-2 py-0.5 rounded-full bg-gray-200 text-gray-700 text-[10px] font-bold uppercase tracking-wider">
+          <span className="inline-block px-2 py-0.5 rounded-full bg-gray-200 text-gray-700 text-[10px] font-bold uppercase tracking-wider">
             {provider.specialty}
           </span>
         </div>
