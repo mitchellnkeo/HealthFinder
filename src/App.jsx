@@ -11,7 +11,7 @@ import { ProviderResults } from './features/results/ProviderResults';
 import { ProviderMap } from './components/ProviderMap';
 import { MOCK_PROVIDERS, filterProviders } from './data/providers';
 
-const PAGE_SIZE = 8;
+const PAGE_SIZE = 5;
 
 export default function App() {
   const [selectedSymptoms, setSelectedSymptoms] = useState([]);
@@ -22,6 +22,7 @@ export default function App() {
   const [selectedProvider, setSelectedProvider] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const [hasSearched, setHasSearched] = useState(false);
 
   const filteredProviders = useMemo(() => {
     const byFilters = filterProviders(MOCK_PROVIDERS, selectedInsurance, selectedCategory);
@@ -42,6 +43,7 @@ export default function App() {
   const endItem = Math.min(pageIndex * PAGE_SIZE, resultsCount);
 
   const handleSearchSubmit = () => {
+    setHasSearched(true);
     setCurrentPage(1);
   };
 
@@ -143,8 +145,8 @@ export default function App() {
           </div>
         </div>
 
-        {/* Results Bar - providers always shown by default */}
-        {(
+        {/* Results - shown only after initial Search Providers click */}
+        {hasSearched && (
           <>
             <div className="mt-12 flex flex-col sm:flex-row justify-between items-center gap-6">
               <div className="flex items-center gap-4 text-sm font-bold text-gray-500">

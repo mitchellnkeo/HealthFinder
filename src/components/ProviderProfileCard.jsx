@@ -128,7 +128,7 @@ export function ProviderProfileCardList({ provider, onViewProfile }) {
             <button
               type="button"
               onClick={() => setFavorited((f) => !f)}
-              className="p-2.5 rounded-xl border border-gray-200 text-gray-400 hover:text-red-500 hover:border-red-200 transition-colors"
+              className="p-2.5 rounded-xl border border-gray-200 text-gray-400 hover:text-blue-600 hover:border-blue-300 transition-colors"
               aria-label={favorited ? 'Remove from favorites' : 'Add to favorites'}
             >
               <svg className="w-5 h-5" fill={favorited ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24">
@@ -183,7 +183,7 @@ export function ProviderProfileCardGrid({ provider, onViewProfile }) {
         <button
           type="button"
           onClick={() => setFavorited((f) => !f)}
-          className="p-2 rounded-xl border border-gray-200 text-gray-400 hover:text-red-500 hover:border-red-200 transition-colors"
+          className="p-2 rounded-xl border border-gray-200 text-gray-400 hover:text-blue-600 hover:border-blue-300 transition-colors"
           aria-label={favorited ? 'Remove from favorites' : 'Add to favorites'}
         >
           <svg className="w-4 h-4" fill={favorited ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24">
