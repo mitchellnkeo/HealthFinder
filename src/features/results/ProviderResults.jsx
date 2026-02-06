@@ -1,7 +1,7 @@
 import React from 'react';
 import ProviderProfileCard from '../../components/ProviderProfileCard';
 
-export function ProviderResults({ providers, viewMode, onViewProfile }) {
+export function ProviderResults({ providers, viewMode, onViewProfile, isLoggedIn, onLoginRequiredForFavorite }) {
   if (!providers?.length) {
     return null;
   }
@@ -16,6 +16,8 @@ export function ProviderResults({ providers, viewMode, onViewProfile }) {
               provider={provider}
               variant="list"
               onViewProfile={onViewProfile}
+              isLoggedIn={isLoggedIn}
+              onLoginRequiredForFavorite={onLoginRequiredForFavorite}
             />
           ))}
         </div>
@@ -27,6 +29,8 @@ export function ProviderResults({ providers, viewMode, onViewProfile }) {
               provider={provider}
               variant="grid"
               onViewProfile={onViewProfile}
+              isLoggedIn={isLoggedIn}
+              onLoginRequiredForFavorite={onLoginRequiredForFavorite}
             />
           ))}
         </div>

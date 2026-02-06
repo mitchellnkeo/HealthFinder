@@ -62,7 +62,7 @@ function InsuranceTags({ accepts }) {
   );
 }
 
-export function ProviderProfileCardList({ provider, onViewProfile }) {
+export function ProviderProfileCardList({ provider, onViewProfile, isLoggedIn, onLoginRequiredForFavorite }) {
   const [favorited, setFavorited] = useState(false);
 
   return (
@@ -126,7 +126,13 @@ export function ProviderProfileCardList({ provider, onViewProfile }) {
             </button>
             <button
               type="button"
-              onClick={() => setFavorited((f) => !f)}
+              onClick={() => {
+                if (!isLoggedIn && onLoginRequiredForFavorite) {
+                  onLoginRequiredForFavorite();
+                } else {
+                  setFavorited((f) => !f);
+                }
+              }}
               className="p-2.5 rounded-xl border border-gray-200 text-gray-400 hover:text-blue-600 hover:border-blue-300 transition-colors"
               aria-label={favorited ? 'Remove from favorites' : 'Add to favorites'}
             >
@@ -141,7 +147,7 @@ export function ProviderProfileCardList({ provider, onViewProfile }) {
   );
 }
 
-export function ProviderProfileCardGrid({ provider, onViewProfile }) {
+export function ProviderProfileCardGrid({ provider, onViewProfile, isLoggedIn, onLoginRequiredForFavorite }) {
   const [favorited, setFavorited] = useState(false);
 
   return (
@@ -181,7 +187,13 @@ export function ProviderProfileCardGrid({ provider, onViewProfile }) {
         </button>
         <button
           type="button"
-          onClick={() => setFavorited((f) => !f)}
+          onClick={() => {
+            if (!isLoggedIn && onLoginRequiredForFavorite) {
+              onLoginRequiredForFavorite();
+            } else {
+              setFavorited((f) => !f);
+            }
+          }}
           className="p-2 rounded-xl border border-gray-200 text-gray-400 hover:text-blue-600 hover:border-blue-300 transition-colors"
           aria-label={favorited ? 'Remove from favorites' : 'Add to favorites'}
         >
@@ -194,9 +206,9 @@ export function ProviderProfileCardGrid({ provider, onViewProfile }) {
   );
 }
 
-export default function ProviderProfileCard({ provider, variant = 'list', onViewProfile }) {
+export default function ProviderProfileCard({ provider, variant = 'list', onViewProfile, isLoggedIn, onLoginRequiredForFavorite }) {
   if (variant === 'grid') {
-    return <ProviderProfileCardGrid provider={provider} onViewProfile={onViewProfile} />;
+    return <ProviderProfileCardGrid provider={provider} onViewProfile={onViewProfile} isLoggedIn={isLoggedIn} onLoginRequiredForFavorite={onLoginRequiredForFavorite} />;
   }
-  return <ProviderProfileCardList provider={provider} onViewProfile={onViewProfile} />;
+  return <ProviderProfileCardList provider={provider} onViewProfile={onViewProfile} isLoggedIn={isLoggedIn} onLoginRequiredForFavorite={onLoginRequiredForFavorite} />;
 }

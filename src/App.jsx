@@ -23,6 +23,8 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
+  const [showLoginToast, setShowLoginToast] = useState(false);
+  const isLoggedIn = false; // No real auth yet; heart click when logged out opens modal + toast
 
   const filteredProviders = useMemo(() => {
     const byFilters = filterProviders(MOCK_PROVIDERS, selectedInsurance, selectedCategory);
@@ -68,6 +70,11 @@ export default function App() {
     setSelectedProvider(provider ?? null);
   };
 
+  const handleFavoriteClickWhenLoggedOut = () => {
+    setShowAuthModal(true);
+    setShowLoginToast(true);
+  };
+
   useEffect(() => {
     const handleEscape = (e) => {
       if (e.key === 'Escape') {
@@ -85,11 +92,29 @@ export default function App() {
     };
   }, [selectedProvider, showAuthModal]);
 
+  useEffect(() => {
+    if (!showLoginToast) return;
+    const t = setTimeout(() => setShowLoginToast(false), 4000);
+    return () => clearTimeout(t);
+  }, [showLoginToast]);
+
   return (
     <div className="min-h-screen bg-gray-50 font-sans pb-20">
       <Header onLoginClick={() => setShowAuthModal(true)} />
       {showAuthModal && (
         <AuthModal onClose={() => setShowAuthModal(false)} />
+      )}
+      {showLoginToast && (
+        <div
+          className="fixed bottom-6 right-6 z-[10001] flex items-center gap-2 rounded-xl bg-gray-900 px-4 py-3 text-white shadow-lg"
+          role="status"
+          aria-live="polite"
+        >
+          <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-white/20 text-sm font-bold">
+            !
+          </span>
+          <span className="text-sm font-medium">Please login to save providers</span>
+        </div>
       )}
       {selectedProvider && (
         <ProviderProfileModal
@@ -213,6 +238,8 @@ export default function App() {
                   providers={displayProviders}
                   viewMode={viewMode}
                   onViewProfile={handleViewProfile}
+                  isLoggedIn={isLoggedIn}
+                  onLoginRequiredForFavorite={handleFavoriteClickWhenLoggedOut}
                 />
                 {totalPages > 1 && (
                   <nav
