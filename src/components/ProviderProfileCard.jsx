@@ -101,7 +101,7 @@ export function ProviderProfileCardList({ provider, onViewProfile }) {
 
         {/* Right: availability + actions */}
         <div className="md:w-56 shrink-0 flex flex-col gap-4">
-          <div className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-blue-50 text-blue-800 text-sm font-bold w-fit">
+          <div className="inline-flex items-center gap-2 px-3 py-2 rounded-full bg-blue-50/40 text-blue-800 text-sm font-bold min-w-[8rem]">
             {ICONS.clock}
             <span>Wait time: {provider.waitTime}</span>
           </div>
@@ -167,9 +167,9 @@ export function ProviderProfileCardGrid({ provider, onViewProfile }) {
         <p className="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">Accepts</p>
         <InsuranceTags accepts={provider.accepts} />
       </div>
-      <div className="inline-flex items-center gap-2 px-2.5 py-1.5 rounded-lg bg-blue-50 text-blue-800 text-xs font-bold w-fit mb-4">
+      <div className="inline-flex items-center gap-2 px-3 py-2 rounded-full bg-blue-50/40 text-blue-800 text-sm font-bold min-w-[8rem] mb-4">
         {ICONS.clock}
-        <span>{provider.waitTime}</span>
+        <span>Wait time: {provider.waitTime}</span>
       </div>
       <div className="mt-auto flex gap-2">
         <button
