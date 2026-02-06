@@ -146,7 +146,7 @@ export default function App() {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && handleSearchSubmit()}
-                  placeholder="Doctor name or clinic..."
+                  placeholder="Your search is ready"
                   className="w-full rounded-xl border border-gray-200 bg-gray-50 py-3.5 pl-12 pr-4 text-gray-700 placeholder-gray-400 focus:border-gray-400 focus:bg-white focus:outline-none font-medium transition-colors"
                   aria-label="Search providers by name or clinic"
                 />
