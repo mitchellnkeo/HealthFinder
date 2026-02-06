@@ -3,15 +3,16 @@ import FilterTab from '../../components/ui/FilterTab';
 import SelectionCard from '../../components/ui/SelectionCard';
 
 const SYMPTOM_TABS = [
-  'All Symptoms', 
-  'Pain & Discomfort', 
-  'Respiratory', 
-  'General Symptoms', 
-  'Mental Health', 
-  'Skin Conditions', 
-  'Digestive'
+  'All Symptoms',
+  'Pain & Discomfort',
+  'Respiratory',
+  'General Symptoms',
+  'Mental Health',
+  'Skin Conditions',
+  'Digestive',
 ];
 
+/** Symptoms shown in collapsed view (All Symptoms tab only). */
 const SYMPTOMS_COLLAPSED = [
   'Back Pain',
   'Chest Pain',
@@ -21,6 +22,7 @@ const SYMPTOMS_COLLAPSED = [
   'Neck Pain',
 ].sort();
 
+/** All symptoms, used for "All Symptoms" expanded view. */
 const SYMPTOMS_EXPANDED = [
   'Anxiety',
   'Back Pain',
@@ -46,6 +48,24 @@ const SYMPTOMS_EXPANDED = [
   'Stomach Pain',
   'Swelling',
 ].sort();
+
+/** Map each category tab (except "All Symptoms") to the symptoms that belong in it. */
+const SYMPTOMS_BY_CATEGORY = {
+  'Pain & Discomfort': ['Back Pain', 'Chest Pain', 'Headache', 'Joint Pain', 'Muscle Pain', 'Neck Pain'].sort(),
+  Respiratory: ['Congestion', 'Cough', 'Shortness of Breath', 'Sore Throat'].sort(),
+  'General Symptoms': ['Dizziness', 'Fatigue', 'Fever', 'Swelling'].sort(),
+  'Mental Health': ['Anxiety', 'Depression', 'Insomnia'].sort(),
+  'Skin Conditions': ['Itching', 'Rash'].sort(),
+  Digestive: ['Constipation', 'Diarrhea', 'Nausea', 'Stomach Pain'].sort(),
+};
+
+function getSymptomsToDisplay(activeTab, showAllSymptoms) {
+  if (activeTab === 'All Symptoms') {
+    return showAllSymptoms ? [...SYMPTOMS_EXPANDED] : [...SYMPTOMS_COLLAPSED];
+  }
+  const list = SYMPTOMS_BY_CATEGORY[activeTab];
+  return list ? [...list] : [];
+}
 
 export const SymptomGrid = ({
   selectedSymptoms: controlledSymptoms,
@@ -113,7 +133,7 @@ export const SymptomGrid = ({
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
-        {(showAllSymptoms ? SYMPTOMS_EXPANDED : SYMPTOMS_COLLAPSED).map(symptom => (
+        {getSymptomsToDisplay(activeTab, activeTab === 'All Symptoms' ? showAllSymptoms : true).map(symptom => (
           <SelectionCard
             key={symptom}
             label={symptom}
@@ -123,25 +143,27 @@ export const SymptomGrid = ({
         ))}
       </div>
 
-      {showAllSymptoms ? (
-        <button
-          type="button"
-          onClick={() => setShowAllSymptoms(false)}
-          className="text-blue-600 font-extrabold text-sm hover:underline flex items-center justify-center gap-2 mx-auto pt-2 cursor-pointer hover:text-blue-700 transition-colors"
-        >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
-          </svg>
-          Show less
-        </button>
-      ) : (
-        <button
-          type="button"
-          onClick={() => setShowAllSymptoms(true)}
-          className="text-blue-600 font-extrabold text-sm hover:underline block mx-auto pt-2 cursor-pointer hover:text-blue-700 transition-colors"
-        >
-          ... more
-        </button>
+      {activeTab === 'All Symptoms' && (
+        showAllSymptoms ? (
+          <button
+            type="button"
+            onClick={() => setShowAllSymptoms(false)}
+            className="text-blue-600 font-extrabold text-sm hover:underline flex items-center justify-center gap-2 mx-auto pt-2 cursor-pointer hover:text-blue-700 transition-colors"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
+            </svg>
+            Show less
+          </button>
+        ) : (
+          <button
+            type="button"
+            onClick={() => setShowAllSymptoms(true)}
+            className="text-blue-600 font-extrabold text-sm hover:underline block mx-auto pt-2 cursor-pointer hover:text-blue-700 transition-colors"
+          >
+            ... more
+          </button>
+        )
       )}
 
       {selectedSymptoms.length > 0 && (
