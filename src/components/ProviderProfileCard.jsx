@@ -52,10 +52,9 @@ function InsuranceTags({ accepts }) {
         return (
           <span
             key={name}
-            className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${style.bg} ${style.text}`}
+            className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${style.bg} ${style.text}`}
           >
-            <span>{style.initial}</span>
-            <span>{name}</span>
+            {name}
           </span>
         );
       })}
