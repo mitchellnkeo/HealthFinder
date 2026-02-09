@@ -99,7 +99,7 @@ export default function App() {
   }, [showLoginToast]);
 
   return (
-    <div className="min-h-screen bg-gray-50 font-sans pb-20">
+    <div className="min-h-screen font-sans pb-20" style={{ backgroundColor: '#F8F8F8' }}>
       <Header onLoginClick={() => setShowAuthModal(true)} />
       {showAuthModal && (
         <AuthModal onClose={() => setShowAuthModal(false)} />
@@ -123,7 +123,7 @@ export default function App() {
         />
       )}
 
-      <main className="max-w-6xl mx-auto px-6">
+      <main className="max-w-6xl mx-auto px-6 pt-8">
         <div className="bg-white rounded-[40px] p-10 shadow-xl shadow-gray-200/50 border border-gray-100">
           <SearchForm />
 
