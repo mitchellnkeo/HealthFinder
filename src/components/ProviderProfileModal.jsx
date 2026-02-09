@@ -133,7 +133,7 @@ export function ProviderProfileModal({ provider, onClose }) {
       <div className="relative w-full max-w-2xl bg-gray-50 rounded-3xl shadow-2xl my-8" onClick={(e) => e.stopPropagation()}>
         {/* Header - scrolls away with the rest of the card */}
         <div className="flex items-center justify-between px-6 py-4 bg-gray-50 border-b border-gray-100 rounded-t-3xl">
-          <h2 id="provider-profile-title" className="text-xl font-bold text-gray-900">
+          <h2 id="provider-profile-title" className="text-xl font-bold text-gray-900 font-ligatures-off">
             Provider Profile
           </h2>
           <button

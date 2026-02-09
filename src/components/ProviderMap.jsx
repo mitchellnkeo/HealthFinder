@@ -92,7 +92,7 @@ export function ProviderMap({ providers, onViewProfile }) {
                 <button
                   type="button"
                   onClick={() => onViewProfile && onViewProfile(provider)}
-                  className="mt-3 w-full py-2 rounded-lg bg-gray-900 text-white text-sm font-bold hover:bg-gray-800 transition-colors"
+                  className="mt-3 w-full py-2 rounded-lg bg-gray-900 text-white text-sm font-bold hover:bg-gray-800 transition-colors font-ligatures-off"
                 >
                   View Profile
                 </button>

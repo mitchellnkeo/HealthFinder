@@ -120,7 +120,7 @@ export function ProviderProfileCardList({ provider, onViewProfile, isLoggedIn, o
             <button
               type="button"
               onClick={() => onViewProfile?.(provider)}
-              className="flex-1 px-4 py-2.5 rounded-xl bg-gray-800 text-white text-sm font-bold hover:bg-gray-900 transition-colors"
+              className="flex-1 px-4 py-2.5 rounded-xl bg-gray-800 text-white text-sm font-bold hover:bg-gray-900 transition-colors font-ligatures-off"
             >
               View Profile
             </button>
@@ -181,7 +181,7 @@ export function ProviderProfileCardGrid({ provider, onViewProfile, isLoggedIn, o
         <button
           type="button"
           onClick={() => onViewProfile?.(provider)}
-          className="flex-1 px-3 py-2 rounded-xl bg-gray-800 text-white text-sm font-bold hover:bg-gray-900 transition-colors"
+          className="flex-1 px-3 py-2 rounded-xl bg-gray-800 text-white text-sm font-bold hover:bg-gray-900 transition-colors font-ligatures-off"
         >
           View Profile
         </button>
