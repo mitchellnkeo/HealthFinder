@@ -24,6 +24,7 @@ export default function App() {
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
   const [showLoginToast, setShowLoginToast] = useState(false);
+  const [searchToast, setSearchToast] = useState(null); // { providers: number, symptoms: number } when visible
   const isLoggedIn = false; // No real auth yet; heart click when logged out opens modal + toast
 
   const filteredProviders = useMemo(() => {
@@ -47,6 +48,7 @@ export default function App() {
   const handleSearchSubmit = () => {
     setHasSearched(true);
     setCurrentPage(1);
+    setSearchToast({ providers: resultsCount, symptoms: selectedSymptoms.length });
   };
 
   useEffect(() => {
@@ -98,6 +100,12 @@ export default function App() {
     return () => clearTimeout(t);
   }, [showLoginToast]);
 
+  useEffect(() => {
+    if (!searchToast) return;
+    const t = setTimeout(() => setSearchToast(null), 4000);
+    return () => clearTimeout(t);
+  }, [searchToast]);
+
   return (
     <div className="min-h-screen font-sans pb-20" style={{ backgroundColor: '#F8F8F8' }}>
       <Header onLoginClick={() => setShowAuthModal(true)} />
@@ -114,6 +122,20 @@ export default function App() {
             !
           </span>
           <span className="text-sm font-medium">Please login to save providers</span>
+        </div>
+      )}
+      {searchToast && (
+        <div
+          className="fixed bottom-6 right-6 z-[10001] flex items-center gap-3 rounded-xl border border-gray-200 bg-white px-4 py-3 shadow-lg"
+          role="status"
+          aria-live="polite"
+        >
+          <svg className="h-6 w-6 shrink-0 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden>
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7" />
+          </svg>
+          <span className="text-sm font-medium text-gray-900">
+            Found {searchToast.providers} provider{searchToast.providers === 1 ? '' : 's'} for {searchToast.symptoms} symptom{searchToast.symptoms === 1 ? '' : 's'}
+          </span>
         </div>
       )}
       {selectedProvider && (
