@@ -5,14 +5,17 @@ const Header = ({ onLoginClick }) => {
   return (
     <div className="w-full bg-white">
       <header className="max-w-6xl mx-auto px-6 py-8 flex justify-between items-center gap-8">
-      <div className="min-h-[180px] flex flex-col justify-center flex-shrink-0">
-        <div className="w-fit flex flex-col gap-2">
-          <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-[180px] font-black tracking-tight leading-none uppercase whitespace-nowrap">
-            <span className="text-[#2A4897]">SYMP</span>
-            <span className="text-[#E69138]">TRA</span>
-          </h1>
-          <p className="text-[#707070] text-lg sm:text-xl md:text-2xl lg:text-[2.5rem] font-normal italic w-full leading-tight">Start with symptoms. Find your doctor.</p>
-        </div>
+      <div className="flex flex-col justify-center flex-shrink-0 min-h-0">
+        <a href="/" className="block w-fit focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 rounded">
+          <img
+            src="/Symptra-logo.svg"
+            alt="Symptra - Start with symptoms. Find your doctor."
+            className="h-12 w-auto sm:h-16 md:h-20 lg:h-24 xl:h-[180px] object-contain object-left"
+            width="433"
+            height="182"
+            fetchPriority="high"
+          />
+        </a>
       </div>
       <Button
         variant="primary"
