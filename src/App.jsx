@@ -1,7 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import Header from './components/Header';
 import Button from './components/ui/Button';
-import { Watermark } from './components/Watermark';
 import { AuthModal } from './components/AuthModal';
 import { ProviderProfileModal } from './components/ProviderProfileModal';
 import { SearchForm } from './features/search/SearchForm';
@@ -101,8 +100,6 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-gray-50 font-sans pb-20">
-      <Watermark />
-      <div className="relative z-10">
       <Header onLoginClick={() => setShowAuthModal(true)} />
       {showAuthModal && (
         <AuthModal onClose={() => setShowAuthModal(false)} />
@@ -281,7 +278,6 @@ export default function App() {
           </>
         )}
       </main>
-      </div>
     </div>
   );
 }

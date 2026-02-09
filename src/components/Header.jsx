@@ -4,12 +4,14 @@ import Button from './ui/Button';
 const Header = ({ onLoginClick }) => {
   return (
     <header className="max-w-7xl mx-auto px-6 py-8 flex justify-between items-center">
-      <div className="space-y-0.5">
-        <h1 className="text-2xl font-black tracking-tight">
-          <span className="text-[#1e3a5f]">Symp</span>
-          <span className="text-[#c9762a]">tra</span>
-        </h1>
-        <p className="text-gray-500 text-sm font-medium italic">Start with symptoms. Find your doctor.</p>
+      <div className="min-h-[180px] flex flex-col justify-center">
+        <div className="w-fit flex flex-col gap-2">
+          <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-[180px] font-black tracking-tight leading-none uppercase whitespace-nowrap">
+            <span className="text-[#3654B0]">SYMP</span>
+            <span className="text-[#E18E42]">TRA</span>
+          </h1>
+          <p className="text-[#707070] text-lg sm:text-xl md:text-2xl lg:text-[2.5rem] font-normal italic w-full leading-tight">Start with symptoms. Find your doctor.</p>
+        </div>
       </div>
       <Button
         variant="primary"
